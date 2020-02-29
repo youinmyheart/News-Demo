@@ -13,51 +13,45 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AppUtils.log("viewDidLoad")
-        testAPI()
+        
     }
 
-    func testAPI() {
-        let manager = AFHTTPSessionManager(baseURL: URL(string: Constants.SERVER_BASE_URL))
-        manager.requestSerializer = AFJSONRequestSerializer()
-        manager.responseSerializer = AFJSONResponseSerializer()
+    @IBAction func tapOnBtn(_ sender: Any) {
+        AppUtils.log("tapOnBtn")
+//        ApiManager.getTopHeadlinesInUS(onSuccess: { (task, articles) in
+//            if let article = articles.first {
+//                AppUtils.log("article:", article)
+//            }
+//        }) { (task, error, errStr) in
+//            if AppUtils.isEmptyString(errStr) {
+//                AppUtils.log("error:", error.localizedDescription)
+//            } else {
+//                AppUtils.log("error:", errStr)
+//            }
+//        }
         
-        let urlTopHeadlines = "v2/top-headlines"
+//        ApiManager.getTopHeadlinesBBCNews(onSuccess: { (task, articles) in
+//            if let article = articles.first {
+//                AppUtils.log("article:", article)
+//            }
+//        }) { (task, error, errStr) in
+//            if AppUtils.isEmptyString(errStr) {
+//                AppUtils.log("error:", error.localizedDescription)
+//            } else {
+//                AppUtils.log("error:", errStr)
+//            }
+//        }
         
-        // Top headlines from US
-//        let params = ["apiKey": Constants.API_KEY,
-//                       "country": "us"]
-        
-        // Top headlines from BBC News
-        let params = ["apiKey": Constants.API_KEY,
-                      "sources": "bbc-news"]
-        
-        manager.get(urlTopHeadlines, parameters: params, progress: { (progress) in
-            AppUtils.log("progress:", progress)
-        }, success: { (task, response) in
-            AppUtils.log("success")
-            if let urlResponse = task.response as? HTTPURLResponse {
-                AppUtils.log("statusCode:", urlResponse.statusCode)
+        ApiManager.getAllArticles(keyword: "apple", onSuccess: { (task, articles) in
+            if let article = articles.first {
+                AppUtils.log("article:", article)
             }
-            if let response = response as? NSDictionary {
-                let json = JSON(response)
-                AppUtils.log("status:", json["status"])
-                AppUtils.log("totalResults:", json["totalResults"])
-                let article = json["articles"][0]
-                AppUtils.log("articles 0:", article)
-                AppUtils.log("source:", article["source"])
-                AppUtils.log("name:", article["source"]["name"])
-                AppUtils.log("id:", article["source"]["id"])
-                AppUtils.log("author:", article["author"])
-                AppUtils.log("title:", article["title"])
-                AppUtils.log("description:", article["description"])
-                AppUtils.log("url:", article["url"])
-                AppUtils.log("urlToImage:", article["urlToImage"])
-                AppUtils.log("publishedAt:", article["publishedAt"])
-                AppUtils.log("content:", article["content"])
+        }) { (task, error, errStr) in
+            if AppUtils.isEmptyString(errStr) {
+                AppUtils.log("error:", error.localizedDescription)
+            } else {
+                AppUtils.log("error:", errStr)
             }
-            
-        }) { (task, error) in
-            AppUtils.log("error:", error)
         }
     }
 }

@@ -31,4 +31,17 @@ class AppUtils: NSObject {
         print("\(dateTime) [\(className ?? "")] [Line \(line)]", str, separator: separator, terminator: terminator)
         #endif
     }
+    
+    public static func getPreviousMonth() -> String {
+        let prevMonthStr: String
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
+            prevMonthStr = formatter.string(from: previousMonth)
+        } else {
+            // in case error, we get current date
+            prevMonthStr = formatter.string(from: Date())
+        }
+        return prevMonthStr
+    }
 }
