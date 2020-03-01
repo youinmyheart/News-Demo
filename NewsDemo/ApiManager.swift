@@ -30,6 +30,13 @@ class ApiManager: NSObject {
         getAllArticles(keyword: keyword, dateFrom: prevMonth, sortBy: "publishedAt", onSuccess: onSuccess, onError: onError)
     }
     
+    static func getTopHeadlines(keyword: String, onSuccess: ((URLSessionDataTask, [Article]) -> Void)?, onError: ((URLSessionDataTask?, Error, String) -> Void)?) {
+        let urlTopHeadlines = "v2/top-headlines"
+        let params = ["apiKey": Constants.API_KEY,
+                      "q": keyword]
+        requestGet(urlString: urlTopHeadlines, params: params, onSuccess: onSuccess, onError: onError)
+    }
+    
     static func getTopHeadlines(country: String, onSuccess: ((URLSessionDataTask, [Article]) -> Void)?, onError: ((URLSessionDataTask?, Error, String) -> Void)?) {
         let urlTopHeadlines = "v2/top-headlines"
         let params = ["apiKey": Constants.API_KEY,
@@ -94,5 +101,35 @@ class ApiManager: NSObject {
                 onError(task, error, errorStr)
             }
         }
+    }
+    
+    static func downloadImage(urlString: String, onProgress: ((Progress) -> Void)?, onCompleted: ((Any?, Error?, String) -> Void)?) -> URLSessionDataTask? {
+        guard let url = URL(string: urlString) else { return nil }
+        let request = URLRequest(url: url)
+        let configuration = URLSessionConfiguration.default
+        let manager = AFHTTPSessionManager(sessionConfiguration: configuration)
+        manager.responseSerializer = AFImageResponseSerializer()
+        
+        let dataTask = manager.dataTask(with: request, uploadProgress: { (progress) in
+            
+        }, downloadProgress: { (progress) in
+            if let onProgress = onProgress {
+                onProgress(progress)
+            }
+        }) { (urlResponse, responseObject, error) in
+            var errorStr = ""
+            let errData = error?._userInfo?[AFNetworkingOperationFailingURLResponseDataErrorKey]
+            if let errData = errData as? Data {
+                if let errResponse = String(data: errData, encoding: String.Encoding.utf8) {
+                    errorStr = errResponse
+                }
+            }
+            
+            if let onCompleted = onCompleted {
+                onCompleted(responseObject, error, errorStr)
+            }
+        }
+        dataTask.resume()
+        return dataTask
     }
 }

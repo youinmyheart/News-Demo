@@ -18,6 +18,8 @@ struct Article {
     var urlToImage: String? = ""
     var publishedAt: String? = ""
     var content: String? = ""
+    var image: UIImage?
+    var isDownloading: Bool? = false
 }
 
 extension Article {

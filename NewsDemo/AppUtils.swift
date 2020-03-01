@@ -44,4 +44,20 @@ class AppUtils: NSObject {
         }
         return prevMonthStr
     }
+    
+    public static func getDateString(from str: String?) -> String {
+        // "2020-02-29T00:32:00Z" -> "2020-02-29 07:32:00"
+        guard let str = str else { return "" }
+        var ret = str
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        if let date = dateFormatter.date(from:str) {
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            ret = dateFormatter.string(from: date)
+        }
+        return ret
+    }
 }
