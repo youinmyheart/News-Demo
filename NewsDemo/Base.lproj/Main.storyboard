@@ -103,6 +103,10 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7ln-5N-HRB">
                                 <rect key="frame" x="0.0" y="188" width="414" height="625"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="OLp-Ia-cKg" id="dQl-31-Uus"/>
+                                    <outlet property="delegate" destination="OLp-Ia-cKg" id="1ZC-d8-3hl"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -120,6 +124,7 @@
                     <navigationItem key="navigationItem" id="MC3-VB-pxj"/>
                     <connections>
                         <outlet property="m_collectionView" destination="4pE-J1-0gS" id="3aU-vq-91I"/>
+                        <outlet property="m_tableView" destination="7ln-5N-HRB" id="rvg-ao-vwE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yvI-AS-HYh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -137,54 +142,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aHD-Ge-2vR">
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsTableCell" rowHeight="110" id="57m-Hq-rSs" customClass="NewsTableCell" customModule="NewsDemo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="110"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="57m-Hq-rSs" id="UcD-8v-zHc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="ByQ-W2-SNU">
-                                                    <rect key="frame" x="8" y="10" width="124" height="90"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="90" id="eQP-1I-NqM"/>
-                                                        <constraint firstAttribute="width" constant="124" id="jNJ-6R-6If"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="US and Taliban poised to sign historic agreement - CNN" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xle-HM-e9j">
-                                                    <rect key="frame" x="140" y="10" width="218.5" height="38.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2020-02-29T05:43:00Z" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SYq-kx-n6v">
-                                                    <rect key="frame" x="140" y="86" width="128" height="14"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="xle-HM-e9j" firstAttribute="leading" secondItem="ByQ-W2-SNU" secondAttribute="trailing" constant="8" id="0D0-5e-hLi"/>
-                                                <constraint firstItem="xle-HM-e9j" firstAttribute="top" secondItem="UcD-8v-zHc" secondAttribute="top" constant="10" id="CKh-82-Km6"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SYq-kx-n6v" secondAttribute="trailing" constant="10" id="Jk3-O2-gK4"/>
-                                                <constraint firstItem="ByQ-W2-SNU" firstAttribute="leading" secondItem="UcD-8v-zHc" secondAttribute="leading" constant="8" id="SlE-7U-lBR"/>
-                                                <constraint firstItem="SYq-kx-n6v" firstAttribute="top" relation="greaterThanOrEqual" secondItem="xle-HM-e9j" secondAttribute="bottom" constant="10" id="TPq-Z0-swN"/>
-                                                <constraint firstItem="ByQ-W2-SNU" firstAttribute="top" secondItem="UcD-8v-zHc" secondAttribute="top" constant="10" id="URt-Th-IcH"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xle-HM-e9j" secondAttribute="trailing" constant="10" id="agS-4K-Xh0"/>
-                                                <constraint firstAttribute="bottom" secondItem="SYq-kx-n6v" secondAttribute="bottom" constant="10" id="cg4-2a-nrb"/>
-                                                <constraint firstItem="SYq-kx-n6v" firstAttribute="leading" secondItem="xle-HM-e9j" secondAttribute="leading" id="nCL-ZF-vTl"/>
-                                                <constraint firstAttribute="bottom" secondItem="ByQ-W2-SNU" secondAttribute="bottom" constant="10" id="nKX-gE-d6p"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="m_image" destination="ByQ-W2-SNU" id="MHq-Ig-Qz3"/>
-                                            <outlet property="m_publishedDate" destination="SYq-kx-n6v" id="37G-Jz-5Tq"/>
-                                            <outlet property="m_title" destination="xle-HM-e9j" id="cQX-Ld-kYe"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="9YT-6y-8EP" id="GE2-KL-jKb"/>
                                     <outlet property="delegate" destination="9YT-6y-8EP" id="DrK-UT-kdf"/>
@@ -393,16 +350,6 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q8D-vx-ZZq">
-                                <rect key="frame" x="184" y="433" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="tapOnBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JD6-eE-9XX"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -475,7 +422,6 @@
         <image name="category" width="32" height="32"/>
         <image name="home" width="32" height="32"/>
         <image name="line" width="50" height="10"/>
-        <image name="placeholder" width="256" height="256"/>
         <image name="profile" width="32" height="32"/>
     </resources>
 </document>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NewsTableCell" customModule="NewsDemo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="110"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="vbS-Sl-Jle">
+                    <rect key="frame" x="10" y="10" width="124" height="90"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="90" id="b3g-wR-PCa"/>
+                        <constraint firstAttribute="width" constant="124" id="eQ9-gV-4k1"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="US and Taliban poised to sign historic agreement - CNN" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Had-gG-Ce1">
+                    <rect key="frame" x="142" y="10" width="218.5" height="38.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2020-02-29T05:43:00Z" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RFh-Fd-DhJ">
+                    <rect key="frame" x="142" y="86" width="128" height="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="NewsTableCell"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Had-gG-Ce1" secondAttribute="trailing" constant="10" id="0G9-7m-UO8"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="RFh-Fd-DhJ" secondAttribute="bottom" constant="10" id="0lc-ol-qpt"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="vbS-Sl-Jle" secondAttribute="bottom" constant="10" id="2nZ-0B-hbe"/>
+                <constraint firstItem="RFh-Fd-DhJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Had-gG-Ce1" secondAttribute="bottom" constant="10" id="3FI-zi-w6Q"/>
+                <constraint firstItem="RFh-Fd-DhJ" firstAttribute="leading" secondItem="Had-gG-Ce1" secondAttribute="leading" id="AUD-iQ-VRh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RFh-Fd-DhJ" secondAttribute="trailing" constant="10" id="ClC-hY-KSj"/>
+                <constraint firstItem="vbS-Sl-Jle" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Fo8-Vj-fL1"/>
+                <constraint firstItem="Had-gG-Ce1" firstAttribute="leading" secondItem="vbS-Sl-Jle" secondAttribute="trailing" constant="8" id="bXf-hv-Gf8"/>
+                <constraint firstItem="vbS-Sl-Jle" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="dib-8L-50M"/>
+                <constraint firstItem="Had-gG-Ce1" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="tdx-5G-XBn"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="m_image" destination="vbS-Sl-Jle" id="iuV-4I-bqf"/>
+                <outlet property="m_publishedDate" destination="RFh-Fd-DhJ" id="zfW-FF-r3y"/>
+                <outlet property="m_title" destination="Had-gG-Ce1" id="K6R-Pg-Ru9"/>
+            </connections>
+            <point key="canvasLocation" x="-243" y="-4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="placeholder" width="256" height="256"/>
+    </resources>
+</document>

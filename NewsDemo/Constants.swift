@@ -13,4 +13,6 @@ struct Constants {
     static let COUNTRY_US = "us"
     
     static let SOURCE_BBC_NEWS = "bbc-news"
+    
+    static let newsTableCellId = "NewsTableCell"
 }
