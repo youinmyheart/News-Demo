@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,10 +16,111 @@
                     <view key="view" contentMode="scaleToFill" id="JwK-3U-MGT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4pE-J1-0gS">
+                                <rect key="frame" x="0.0" y="88" width="414" height="85"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="85" id="Csb-Jp-1rx"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="15" minimumInteritemSpacing="15" id="E6J-9z-h6g">
+                                    <size key="itemSize" width="130" height="85"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CategoryCollectionCell" id="WRU-xQ-x4r" customClass="CategoryCollectionCell" customModule="NewsDemo" customModuleProvider="target">
+                                        <rect key="frame" x="10" y="10" width="130" height="65"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="T3r-yD-IgH">
+                                            <rect key="frame" x="0.0" y="0.0" width="130" height="65"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bitcoin" translatesAutoresizingMaskIntoConstraints="NO" id="jrE-2M-ag7">
+                                                    <rect key="frame" x="0.0" y="0.0" width="130" height="65"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="130" id="714-Mh-b6H"/>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="65" id="mE9-2Y-EPI"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ed8-BL-oqQ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="130" height="65"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="65" id="MaV-PA-wvW"/>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="130" id="UPK-hT-rcJ"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bitcoin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FDi-GC-HG2">
+                                                    <rect key="frame" x="36.5" y="27" width="57" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="mdT-h5-4tf"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line" translatesAutoresizingMaskIntoConstraints="NO" id="dsv-1v-3Gu">
+                                                    <rect key="frame" x="50" y="55" width="30" height="5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="5" id="NXJ-Dw-Z6L"/>
+                                                        <constraint firstAttribute="width" constant="30" id="sIE-wl-pxd"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="FDi-GC-HG2" secondAttribute="trailing" constant="15" id="1KW-S6-ml5"/>
+                                                <constraint firstItem="dsv-1v-3Gu" firstAttribute="centerX" secondItem="T3r-yD-IgH" secondAttribute="centerX" id="22h-wx-5HS"/>
+                                                <constraint firstAttribute="bottom" secondItem="jrE-2M-ag7" secondAttribute="bottom" id="43m-cx-655"/>
+                                                <constraint firstItem="dsv-1v-3Gu" firstAttribute="top" secondItem="FDi-GC-HG2" secondAttribute="bottom" constant="8" id="D0T-N3-Mch"/>
+                                                <constraint firstItem="jrE-2M-ag7" firstAttribute="leading" secondItem="T3r-yD-IgH" secondAttribute="leading" id="FYf-iM-Rdw"/>
+                                                <constraint firstAttribute="bottom" secondItem="dsv-1v-3Gu" secondAttribute="bottom" constant="5" id="Jf1-DD-C64"/>
+                                                <constraint firstAttribute="trailing" secondItem="jrE-2M-ag7" secondAttribute="trailing" id="QDc-fG-Me6"/>
+                                                <constraint firstAttribute="bottom" secondItem="Ed8-BL-oqQ" secondAttribute="bottom" id="Vct-Do-Rvm"/>
+                                                <constraint firstItem="FDi-GC-HG2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="T3r-yD-IgH" secondAttribute="leading" constant="15" id="dE2-Qj-9ae"/>
+                                                <constraint firstItem="Ed8-BL-oqQ" firstAttribute="leading" secondItem="T3r-yD-IgH" secondAttribute="leading" id="gFe-Kv-5UH"/>
+                                                <constraint firstAttribute="trailing" secondItem="Ed8-BL-oqQ" secondAttribute="trailing" id="lEV-hx-HRp"/>
+                                                <constraint firstItem="Ed8-BL-oqQ" firstAttribute="top" secondItem="T3r-yD-IgH" secondAttribute="top" id="qLv-Y0-THS"/>
+                                                <constraint firstItem="jrE-2M-ag7" firstAttribute="top" secondItem="T3r-yD-IgH" secondAttribute="top" id="rnv-AU-BWM"/>
+                                                <constraint firstItem="FDi-GC-HG2" firstAttribute="centerX" secondItem="T3r-yD-IgH" secondAttribute="centerX" id="yeH-x5-B1l"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="130" height="65"/>
+                                        <connections>
+                                            <outlet property="lblCategory" destination="FDi-GC-HG2" id="jrb-g6-i8G"/>
+                                            <outlet property="m_darkImageView" destination="Ed8-BL-oqQ" id="3pj-z9-I5T"/>
+                                            <outlet property="m_lineImageView" destination="dsv-1v-3Gu" id="pfy-xW-xe3"/>
+                                            <outlet property="m_mainImageView" destination="jrE-2M-ag7" id="bG9-jg-C8U"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="OLp-Ia-cKg" id="bHA-Xe-IiM"/>
+                                    <outlet property="delegate" destination="OLp-Ia-cKg" id="Zzf-9a-X1U"/>
+                                </connections>
+                            </collectionView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7ln-5N-HRB">
+                                <rect key="frame" x="0.0" y="188" width="414" height="625"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="7ln-5N-HRB" firstAttribute="leading" secondItem="fB4-Y2-joa" secondAttribute="leading" id="5sV-3E-t2v"/>
+                            <constraint firstItem="4pE-J1-0gS" firstAttribute="leading" secondItem="fB4-Y2-joa" secondAttribute="leading" id="M4b-eL-TyD"/>
+                            <constraint firstItem="4pE-J1-0gS" firstAttribute="trailing" secondItem="fB4-Y2-joa" secondAttribute="trailing" id="SFf-Uv-Co9"/>
+                            <constraint firstItem="7ln-5N-HRB" firstAttribute="bottom" secondItem="fB4-Y2-joa" secondAttribute="bottom" id="Xdv-Nz-ggu"/>
+                            <constraint firstItem="7ln-5N-HRB" firstAttribute="top" secondItem="4pE-J1-0gS" secondAttribute="bottom" constant="15" id="Ycv-5f-hUZ"/>
+                            <constraint firstItem="7ln-5N-HRB" firstAttribute="trailing" secondItem="fB4-Y2-joa" secondAttribute="trailing" id="k4U-2C-bgo"/>
+                            <constraint firstItem="4pE-J1-0gS" firstAttribute="top" secondItem="fB4-Y2-joa" secondAttribute="top" id="nQH-fZ-Gey"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="fB4-Y2-joa"/>
                     </view>
                     <navigationItem key="navigationItem" id="MC3-VB-pxj"/>
+                    <connections>
+                        <outlet property="m_collectionView" destination="4pE-J1-0gS" id="3aU-vq-91I"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yvI-AS-HYh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -369,8 +471,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="bitcoin" width="570" height="300"/>
         <image name="category" width="32" height="32"/>
         <image name="home" width="32" height="32"/>
+        <image name="line" width="50" height="10"/>
         <image name="placeholder" width="256" height="256"/>
         <image name="profile" width="32" height="32"/>
     </resources>
