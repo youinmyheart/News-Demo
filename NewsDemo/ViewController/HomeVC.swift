@@ -81,8 +81,7 @@ class HomeVC: UIViewController {
         }
         
         guard let urlToImageArticle = m_arrData[row].urlToImage else { return }
-        
-        AppUtils.log("downloadImage row:", indexPath.row)
+        //AppUtils.log("downloading image at row:", row)
         self.m_arrData[row].isDownloading = true
         _ = ApiManager.downloadImage(urlString: urlToImageArticle, onProgress: { (progress) in
             //AppUtils.log("progress:", progress)
@@ -95,6 +94,7 @@ class HomeVC: UIViewController {
                 AppUtils.log("errorStr:", errorStr)
             } else {
                 if let imageObj = imageObj as? UIImage {
+                    AppUtils.log("downloaded image at row:", row)
                     self.m_arrData[row].image = imageObj
                     let cell = tableView?.cellForRow(at: indexPath) as? NewsTableCell
                     cell?.m_image.image = imageObj
@@ -126,6 +126,15 @@ class HomeVC: UIViewController {
             }
         }
     }
+    
+    func goToNewsDetailVC(index: Int) {
+        print("goToNewsDetailVC")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "NewsDetailVC") as! NewsDetailVC
+        controller.m_article = m_arrData[index]
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 extension HomeVC: UITableViewDataSource, UITableViewDelegate {
@@ -151,6 +160,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        goToNewsDetailVC(index: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

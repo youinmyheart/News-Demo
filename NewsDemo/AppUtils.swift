@@ -60,4 +60,11 @@ class AppUtils: NSObject {
         }
         return ret
     }
+    
+    public static func attributedString(mainStr: String, stringToColor: String, color: UIColor) -> NSAttributedString {
+        let range = (mainStr as NSString).range(of: stringToColor)
+        let attribute = NSMutableAttributedString.init(string: mainStr)
+        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: color , range: range)
+        return attribute
+    }
 }
