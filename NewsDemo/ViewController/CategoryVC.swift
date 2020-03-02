@@ -26,7 +26,8 @@ class CategoryVC: UIViewController {
         setUpUI()
         m_arrFakeData = createFakeLoadingData()
         createDataCategory()
-        
+        updateSelectedCategory()
+        getNews(with: m_selectedIndex)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,9 +36,6 @@ class CategoryVC: UIViewController {
         navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.delegate = self
-        
-        updateSelectedCategory()
-        getNews(with: m_selectedIndex)
     }
     
     func setUpUI() {
@@ -107,7 +105,8 @@ class CategoryVC: UIViewController {
             
             // scroll to top of table view
             if self.m_tableView.numberOfRows(inSection: 0) > 0 {
-                self.m_tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                AppUtils.log("scroll to top")
+                self.m_tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             }
             
             // download image for only visible rows after downloading text
@@ -195,7 +194,19 @@ class CategoryVC: UIViewController {
     }
 }
 
-extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        AppUtils.log("sizeForItemAt", indexPath.row)
+        let width = collectionView.bounds.width
+        var height = collectionView.bounds.height
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            let heightToSubstract = layout.sectionInset.top + layout.sectionInset.bottom
+            height -= heightToSubstract
+        }
+        AppUtils.log("width: \(width), height: \(height)")
+        return CGSize(width: 130, height: height)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         m_arrCategories.count
@@ -250,6 +261,11 @@ extension CategoryVC: UITableViewDelegate, UITableViewDataSource {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         AppUtils.log("scrolling finished");
+        downloadImages(indexPaths: m_tableView.indexPathsForVisibleRows)
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        AppUtils.log("scrollViewDidEndScrollingAnimation");
         downloadImages(indexPaths: m_tableView.indexPathsForVisibleRows)
     }
 }

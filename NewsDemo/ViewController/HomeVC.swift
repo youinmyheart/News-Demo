@@ -18,6 +18,7 @@ class HomeVC: UIViewController {
         AppUtils.log("viewDidLoad")
         m_arrFakeData = createFakeLoadingData()
         setUpUI()
+        getTopHeadlines()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -26,8 +27,6 @@ class HomeVC: UIViewController {
         navigationController?.navigationBar.isHidden = false
         self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.delegate = self
-        
-        getTopHeadlines()
     }
     
     func setUpUI() {
@@ -48,7 +47,7 @@ class HomeVC: UIViewController {
             
             // scroll to top of table view
             if self.m_tableView.numberOfRows(inSection: 0) > 0 {
-                self.m_tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                self.m_tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             }
             
             // download image for only visible rows after downloading text
@@ -193,6 +192,11 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         AppUtils.log("scrolling finished");
+        downloadImages(indexPaths: m_tableView.indexPathsForVisibleRows)
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        AppUtils.log("scrollViewDidEndScrollingAnimation");
         downloadImages(indexPaths: m_tableView.indexPathsForVisibleRows)
     }
 }
