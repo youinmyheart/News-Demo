@@ -18,6 +18,7 @@ class UserProfileVC: UIViewController {
     
     @IBAction func tapBtnSignOut(_ sender: Any) {
         AppUtils.log("tapBtnSignOut")
+        UserDefaults.standard.set(nil, forKey: "currentUser")
         self.navigationController?.popToRootViewController(animated: true)
     }
     

@@ -47,6 +47,14 @@ class RegistrationVC: UIViewController {
         m_scrollView.addGestureRecognizer(tapGesture)
         
         hideAllErrorTexts()
+        txtUsername.delegate = self
+        txtPassword.delegate = self
+        txtConfirmPassword.delegate = self
+        txtEmail.delegate = self
+        txtUsername.returnKeyType = .next
+        txtPassword.returnKeyType = .next
+        txtConfirmPassword.returnKeyType = .next
+        txtEmail.returnKeyType = .done
     }
     
     @objc func hideKeyboard() {
@@ -78,41 +86,21 @@ class RegistrationVC: UIViewController {
     }
     
     func handleCreatingAccount() {
-        guard let str = txtUsername.text else {
-            lblNameError.isHidden = false
-            lblNameError.text = "Name must not be empty"
+        guard let nameUser = validateName(), !AppUtils.isEmptyString(nameUser) else {
             return
         }
         
-        let nameUser = str.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        if AppUtils.isEmptyString(nameUser) {
-            lblNameError.isHidden = false
-            lblNameError.text = "Name must not be empty"
+        guard let pass = validatePassword(), !AppUtils.isEmptyString(pass) else {
             return
         }
         
-        lblNameError.isHidden = true
-        
-        guard let pass = txtPassword.text, pass.count >= 6 else {
-            lblPasswordError.isHidden = false
-            lblPasswordError.text = "Password must has at least 6 characters"
+        guard let passConfirm = validatePasswordConfirm(pass: pass), !AppUtils.isEmptyString(passConfirm) else {
             return
         }
-        lblPasswordError.isHidden = true
         
-        guard let passConfirm = txtConfirmPassword.text, passConfirm == pass else {
-            lblConfirmPasswordError.isHidden = false
-            lblConfirmPasswordError.text = "Must be same as password"
+        guard let email = validateEmail(), !AppUtils.isEmptyString(email) else {
             return
         }
-        lblConfirmPasswordError.isHidden = true
-        
-        guard let email = txtEmail.text, AppUtils.isValidEmail(email) else {
-            lblEmailError.isHidden = false
-            lblEmailError.text = "Email is not valid"
-            return
-        }
-        lblEmailError.isHidden = true
         
         let savedDic = UserDefaults.standard.dictionary(forKey: "userInfo")
         if let savedDic = savedDic {
@@ -139,8 +127,63 @@ class RegistrationVC: UIViewController {
         
         let userInfo = UserInfo(name: nameUser, image: nil, email: email)
         AppUtils.showAlert(title: "Congratulation", message: "Your account is created!", buttonStr: "OK", viewController: self) { (action) in
+            self.saveUserSignedIn(userInfo: userInfo)
             self.goToUserProfileVC(userInfo: userInfo)
         }
+    }
+    
+    func saveUserSignedIn(userInfo: UserInfo) {
+        let dicInfo = ["email": userInfo.email ?? "", "name": userInfo.name ?? ""] as [String : Any]
+        UserDefaults.standard.set(dicInfo, forKey: "currentUser")
+    }
+    
+    func validateName() -> String? {
+        AppUtils.log("validateName")
+        guard let str = txtUsername.text else {
+            lblNameError.isHidden = false
+            lblNameError.text = "Name must not be empty"
+            return ""
+        }
+        
+        let nameUser = str.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if AppUtils.isEmptyString(nameUser) {
+            lblNameError.isHidden = false
+            lblNameError.text = "Name must not be empty"
+            return ""
+        }
+        
+        lblNameError.isHidden = true
+        return nameUser
+    }
+    
+    func validateEmail() -> String? {
+        guard let email = txtEmail.text, AppUtils.isValidEmail(email) else {
+            lblEmailError.isHidden = false
+            lblEmailError.text = "Email is not valid"
+            return ""
+        }
+        lblEmailError.isHidden = true
+        return email
+    }
+    
+    func validatePassword() -> String? {
+        guard let pass = txtPassword.text, pass.count >= 6 else {
+            lblPasswordError.isHidden = false
+            lblPasswordError.text = "Password must has at least 6 characters"
+            return ""
+        }
+        lblPasswordError.isHidden = true
+        return pass
+    }
+    
+    func validatePasswordConfirm(pass: String) -> String? {
+        guard let passConfirm = txtConfirmPassword.text, passConfirm == pass else {
+            lblConfirmPasswordError.isHidden = false
+            lblConfirmPasswordError.text = "Must be same as password"
+            return ""
+        }
+        lblConfirmPasswordError.isHidden = true
+        return passConfirm
     }
     
     func hideAllErrorTexts() {
@@ -156,5 +199,38 @@ class RegistrationVC: UIViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
         controller.m_userInfo = userInfo
         self.navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+extension RegistrationVC: UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        AppUtils.log("textFieldDidEndEditing")
+        if textField == txtUsername && !AppUtils.isEmptyString(txtUsername.text) {
+            _ = validateName()
+        } else if textField == txtPassword && !AppUtils.isEmptyString(txtPassword.text) {
+            _ = validatePassword()
+        } else if textField == txtConfirmPassword && !AppUtils.isEmptyString(txtConfirmPassword.text) {
+            _ = validatePasswordConfirm(pass: txtPassword.text ?? "")
+        } else if textField == txtEmail && !AppUtils.isEmptyString(txtEmail.text) {
+            _ = validateEmail()
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == txtUsername {
+            textField.resignFirstResponder()
+            txtPassword.becomeFirstResponder()
+        } else if textField == txtPassword {
+            textField.resignFirstResponder()
+            txtConfirmPassword.becomeFirstResponder()
+        } else if textField == txtConfirmPassword {
+            textField.resignFirstResponder()
+            txtEmail.becomeFirstResponder()
+        } else if textField == txtEmail {
+            textField.resignFirstResponder()
+            handleCreatingAccount()
+        }
+        return true
     }
 }

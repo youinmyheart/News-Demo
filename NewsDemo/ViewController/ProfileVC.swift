@@ -25,6 +25,7 @@ class ProfileVC: UIViewController {
         super.viewDidLoad()
         AppUtils.log("viewDidLoad")
         setUpUI()
+        handleUserAlreadySignedIn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +64,8 @@ class ProfileVC: UIViewController {
         hideAllErrorTexts()
         txtEmail.delegate = self
         txtPassword.delegate = self
+        txtEmail.returnKeyType = .next
+        txtPassword.returnKeyType = .done
     }
     
     @objc func hideKeyboard() {
@@ -109,7 +112,8 @@ class ProfileVC: UIViewController {
                 if pass == password {
                     let name = account["name"] as? String
                     let userInfo = UserInfo(name: name, image: nil, email: email)
-                    goToUserProfileVC(userInfo: userInfo)
+                    saveUserSignedIn(userInfo: userInfo)
+                    goToUserProfileVC(userInfo: userInfo, animated: true)
                 } else {
                     AppUtils.showAlert(title: "Error", message: "Incorrect username or password", buttonStr: "OK", viewController: self) { (action) in
                         
@@ -127,6 +131,21 @@ class ProfileVC: UIViewController {
                 
             }
         }
+    }
+    
+    func handleUserAlreadySignedIn() {
+        if let dic = UserDefaults.standard.dictionary(forKey: "currentUser") {
+            let name = dic["name"] as? String
+            let email = dic["email"] as? String
+            let image = dic["image"] as? UIImage
+            let userInfo = UserInfo(name: name, image: image, email: email)
+            goToUserProfileVC(userInfo: userInfo, animated: false)
+        }
+    }
+    
+    func saveUserSignedIn(userInfo: UserInfo) {
+        let dicInfo = ["email": userInfo.email ?? "", "name": userInfo.name ?? ""] as [String : Any]
+        UserDefaults.standard.set(dicInfo, forKey: "currentUser")
     }
     
     func hideAllErrorTexts() {
@@ -162,12 +181,12 @@ class ProfileVC: UIViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func goToUserProfileVC(userInfo: UserInfo) {
+    func goToUserProfileVC(userInfo: UserInfo, animated: Bool) {
         print("goToUserProfileVC")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
         controller.m_userInfo = userInfo
-        self.navigationController?.pushViewController(controller, animated: true)
+        self.navigationController?.pushViewController(controller, animated: animated)
     }
 }
 
@@ -189,6 +208,17 @@ extension ProfileVC: UITextFieldDelegate {
         } else if textField == txtPassword && !AppUtils.isEmptyString(txtPassword.text) {
             _ = validatePassword()
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == txtEmail {
+            textField.resignFirstResponder()
+            txtPassword.becomeFirstResponder()
+        } else if textField == txtPassword {
+            textField.resignFirstResponder()
+            handleSigningIn()
+        }
+        return true
     }
 }
 
