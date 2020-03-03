@@ -61,6 +61,8 @@ class ProfileVC: UIViewController {
         m_scrollView.addGestureRecognizer(tapGesture)
         
         hideAllErrorTexts()
+        txtEmail.delegate = self
+        txtPassword.delegate = self
     }
     
     @objc func hideKeyboard() {
@@ -92,19 +94,13 @@ class ProfileVC: UIViewController {
     }
     
     func handleSigningIn() {
-        guard let email = txtEmail.text, AppUtils.isValidEmail(email) else {
-            lblEmailError.isHidden = false
-            lblEmailError.text = "Email is not valid"
+        guard let email = validateEmail(), !AppUtils.isEmptyString(email) else {
             return
         }
-        lblEmailError.isHidden = true
         
-        guard let pass = txtPassword.text, !AppUtils.isEmptyString(pass) else {
-            lblPasswordError.isHidden = false
-            lblPasswordError.text = "Password is not valid"
+        guard let pass = validatePassword(), !AppUtils.isEmptyString(pass) else {
             return
         }
-        lblPasswordError.isHidden = true
         
         if let savedDic = UserDefaults.standard.dictionary(forKey: "userInfo") {
             AppUtils.log("savedDic:", savedDic)
@@ -138,6 +134,26 @@ class ProfileVC: UIViewController {
         lblPasswordError.isHidden = true
     }
     
+    func validateEmail() -> String? {
+        guard let email = txtEmail.text, AppUtils.isValidEmail(email) else {
+            lblEmailError.isHidden = false
+            lblEmailError.text = "Email is not valid"
+            return ""
+        }
+        lblEmailError.isHidden = true
+        return email
+    }
+    
+    func validatePassword() -> String? {
+        guard let pass = txtPassword.text, !AppUtils.isEmptyString(pass) else {
+            lblPasswordError.isHidden = false
+            lblPasswordError.text = "Password is not valid"
+            return ""
+        }
+        lblPasswordError.isHidden = true
+        return pass
+    }
+    
     func goToRegistrationVC() {
         print("goToRegistrationVC")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -160,6 +176,18 @@ extension ProfileVC: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if tabBarController.selectedIndex == 1 {
             AppUtils.log("didSelect tab Profile")
+        }
+    }
+}
+
+extension ProfileVC: UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        AppUtils.log("textFieldDidEndEditing")
+        if textField == txtEmail && !AppUtils.isEmptyString(txtEmail.text) {
+            _ = validateEmail()
+        } else if textField == txtPassword && !AppUtils.isEmptyString(txtPassword.text) {
+            _ = validatePassword()
         }
     }
 }
