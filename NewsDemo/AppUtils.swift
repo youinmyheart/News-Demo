@@ -67,4 +67,17 @@ class AppUtils: NSObject {
         attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: color , range: range)
         return attribute
     }
+    
+    public static func isValidEmail(_ email: String?) -> Bool {
+        let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
+        return emailPredicate.evaluate(with: email)
+    }
+    
+    public class func showAlert(title: String?, message: String?, buttonStr: String?, viewController: UIViewController, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
+        let okBtn = UIAlertAction.init(title: buttonStr, style: .default, handler: handler)
+        alert.addAction(okBtn)
+        viewController.present(alert, animated: true)
+    }
 }
