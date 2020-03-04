@@ -38,4 +38,31 @@ class NewsDemoUITests: XCTestCase {
             }
         }
     }
+    
+    func testUI() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        let tablesQuery = app.tables
+        let title = tablesQuery.staticTexts["Galaxy Note 20 in development with 128GB of base storage - SamMobile"].exists
+        print("title:", title)
+        
+        let navTitleTab1 = app.navigationBars.staticTexts["Top Headlines"].exists
+        print("navTitleTab1:", navTitleTab1)
+        XCTAssert(navTitleTab1)
+        let navTitleTab2 = app.navigationBars.staticTexts["Custom News"].exists
+        print("navTitleTab2:", navTitleTab2)
+        XCTAssertEqual(navTitleTab2, false)
+        
+        let tabBarsQuery = app.tabBars
+        let tabHomeExist = tabBarsQuery.buttons["Home"].exists
+        print("tabHomeExist:", tabHomeExist)
+        XCTAssert(tabHomeExist)
+        let tabCategoryExist = tabBarsQuery.buttons["Category"].exists
+        print("tabCategoryExist:", tabCategoryExist)
+        XCTAssert(tabCategoryExist)
+        let tabProfileExist = tabBarsQuery.buttons["Profile"].exists
+        print("tabProfileExist:", tabProfileExist)
+        XCTAssert(tabProfileExist)
+    }
 }
