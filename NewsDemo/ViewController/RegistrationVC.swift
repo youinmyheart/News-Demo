@@ -47,6 +47,8 @@ class RegistrationVC: UIViewController {
         m_scrollView.addGestureRecognizer(tapGesture)
         
         hideAllErrorTexts()
+        m_containerView.layer.cornerRadius = 5
+        btnCreateAccount.layer.cornerRadius = 5
         txtUsername.delegate = self
         txtPassword.delegate = self
         txtConfirmPassword.delegate = self
@@ -86,19 +88,19 @@ class RegistrationVC: UIViewController {
     }
     
     func handleCreatingAccount() {
-        guard let nameUser = validateName(), !AppUtils.isEmptyString(nameUser) else {
+        guard let nameUser = validateName() else {
             return
         }
         
-        guard let pass = validatePassword(), !AppUtils.isEmptyString(pass) else {
+        guard let pass = validatePassword() else {
             return
         }
         
-        guard let passConfirm = validatePasswordConfirm(pass: pass), !AppUtils.isEmptyString(passConfirm) else {
+        guard validatePasswordConfirm(pass: pass) != nil else {
             return
         }
         
-        guard let email = validateEmail(), !AppUtils.isEmptyString(email) else {
+        guard let email = validateEmail() else {
             return
         }
         
@@ -142,14 +144,14 @@ class RegistrationVC: UIViewController {
         guard let str = txtUsername.text else {
             lblNameError.isHidden = false
             lblNameError.text = "Name must not be empty"
-            return ""
+            return nil
         }
         
         let nameUser = str.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if AppUtils.isEmptyString(nameUser) {
             lblNameError.isHidden = false
             lblNameError.text = "Name must not be empty"
-            return ""
+            return nil
         }
         
         lblNameError.isHidden = true
@@ -160,7 +162,7 @@ class RegistrationVC: UIViewController {
         guard let email = txtEmail.text, AppUtils.isValidEmail(email) else {
             lblEmailError.isHidden = false
             lblEmailError.text = "Email is not valid"
-            return ""
+            return nil
         }
         lblEmailError.isHidden = true
         return email
@@ -170,7 +172,7 @@ class RegistrationVC: UIViewController {
         guard let pass = txtPassword.text, pass.count >= 6 else {
             lblPasswordError.isHidden = false
             lblPasswordError.text = "Password must has at least 6 characters"
-            return ""
+            return nil
         }
         lblPasswordError.isHidden = true
         return pass
@@ -180,7 +182,7 @@ class RegistrationVC: UIViewController {
         guard let passConfirm = txtConfirmPassword.text, passConfirm == pass else {
             lblConfirmPasswordError.isHidden = false
             lblConfirmPasswordError.text = "Must be same as password"
-            return ""
+            return nil
         }
         lblConfirmPasswordError.isHidden = true
         return passConfirm

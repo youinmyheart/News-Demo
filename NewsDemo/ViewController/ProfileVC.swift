@@ -97,11 +97,11 @@ class ProfileVC: UIViewController {
     }
     
     func handleSigningIn() {
-        guard let email = validateEmail(), !AppUtils.isEmptyString(email) else {
+        guard let email = validateEmail() else {
             return
         }
         
-        guard let pass = validatePassword(), !AppUtils.isEmptyString(pass) else {
+        guard let pass = validatePassword() else {
             return
         }
         
@@ -157,7 +157,7 @@ class ProfileVC: UIViewController {
         guard let email = txtEmail.text, AppUtils.isValidEmail(email) else {
             lblEmailError.isHidden = false
             lblEmailError.text = "Email is not valid"
-            return ""
+            return nil
         }
         lblEmailError.isHidden = true
         return email
@@ -167,7 +167,7 @@ class ProfileVC: UIViewController {
         guard let pass = txtPassword.text, !AppUtils.isEmptyString(pass) else {
             lblPasswordError.isHidden = false
             lblPasswordError.text = "Password is not valid"
-            return ""
+            return nil
         }
         lblPasswordError.isHidden = true
         return pass
