@@ -22,16 +22,15 @@ class NewsTableCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
-    public func configure(with model: Article) {
+    
+    public func configure(with model: ArticleViewModel) {
         if let imageArticle = model.image {
             m_image.image = imageArticle
         } else {
-            m_image.image = UIImage(named: "placeholder")
+            m_image.image = model.placeholderImage
         }
-        m_image.layer.cornerRadius = 5
-        
+        m_image.layer.cornerRadius = model.cornerRadius
         m_title.text = model.title
-        m_publishedDate.text = AppUtils.getDateString(from: model.publishedAt)
+        m_publishedDate.text = model.publishedDate
     }
 }

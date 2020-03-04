@@ -20,8 +20,8 @@ class ImageTableCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
-    public func configure(with model: Article) {
+    
+    public func configure(with model: ArticleViewModel) {
         if let image = model.image {
             //AppUtils.log("image:", model.image as Any)
             let widthImage = image.size.width

@@ -23,11 +23,11 @@ class HeaderTableCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
-    public func configure(with model: Article) {
+    
+    public func configure(with model: ArticleViewModel) {
         m_title.text = model.title
         m_sourceName.text = model.sourceName
-        m_publishedAt.text = AppUtils.getDateString(from: model.publishedAt)
-        m_description.text = model.description
+        m_publishedAt.text = model.publishedDate
+        m_description.text = model.articleDescription
     }
 }

@@ -12,7 +12,7 @@ class NewsDetailVC: UIViewController {
     let imageCellId = "ImageTableCell"
     let footerCellId = "FooterTableCell"
     
-    var m_article = Article()
+    var m_articleViewModel = ArticleViewModel(article: Article())
     
     @IBOutlet weak var m_tableView: UITableView!
     
@@ -30,32 +30,32 @@ class NewsDetailVC: UIViewController {
     
     func downloadImage() {
         // download image if it doesnn't exist
-        if m_article.image != nil {
+        if m_articleViewModel.image != nil {
             // image was downloaded before
             return
         }
         
-        if m_article.isDownloading ?? false {
+        if m_articleViewModel.isDownloading ?? false {
             return
         }
         
-        guard let urlToImageArticle = m_article.urlToImage else { return }
+        guard let urlToImageArticle = m_articleViewModel.urlToImage else { return }
         
         AppUtils.log("downloading image")
         let indexPath = IndexPath(row: 1, section: 0)
-        m_article.isDownloading = true
+        m_articleViewModel.isDownloading = true
         _ = ApiManager.downloadImage(urlString: urlToImageArticle, onProgress: { (progress) in
             //AppUtils.log("progress:", progress)
         }) { (imageObj, error, errorStr) in
             //AppUtils.log("imageObj:", imageObj)
-            self.m_article.isDownloading = false
+            self.m_articleViewModel.isDownloading = false
             let tableView = self.m_tableView
             if let error = error {
                 AppUtils.log("error:", error.localizedDescription)
                 AppUtils.log("errorStr:", errorStr)
             } else {
                 if let imageObj = imageObj as? UIImage {
-                    self.m_article.image = imageObj
+                    self.m_articleViewModel.image = imageObj
                     let cell = tableView?.cellForRow(at: indexPath) as? ImageTableCell
                     cell?.m_imageView.image = imageObj
                     tableView?.reloadRows(at: [indexPath], with: .automatic)
@@ -75,19 +75,19 @@ extension NewsDetailVC: UITableViewDataSource, UITableViewDelegate {
         switch indexPath.row {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: headerCellId, for: indexPath) as! HeaderTableCell
-            cell.configure(with: m_article)
+            cell.configure(with: m_articleViewModel)
             cell.selectionStyle = .none
             return cell
             
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: imageCellId, for: indexPath) as! ImageTableCell
-            cell.configure(with: m_article)
+            cell.configure(with: m_articleViewModel)
             cell.selectionStyle = .none
             return cell
             
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: footerCellId, for: indexPath) as! FooterTableCell
-            cell.configure(with: m_article)
+            cell.configure(with: m_articleViewModel)
             cell.selectionStyle = .none
             return cell
         

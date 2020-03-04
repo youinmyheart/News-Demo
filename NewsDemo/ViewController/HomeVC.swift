@@ -8,8 +8,8 @@ import UIKit
 
 class HomeVC: UIViewController {
 
-    var m_arrData = [Article]()
-    var m_arrFakeData = [Article]()
+    var m_arrData = [ArticleViewModel]()
+    var m_arrFakeData = [ArticleViewModel]()
     
     @IBOutlet weak var m_tableView: UITableView!
     
@@ -34,6 +34,14 @@ class HomeVC: UIViewController {
         m_tableView.register(UINib(nibName: "NewsTableCell", bundle: nil), forCellReuseIdentifier: Constants.newsTableCellId)
     }
     
+    func createArrayArticleViewModel(articles: [Article]) -> [ArticleViewModel] {
+        var models = [ArticleViewModel]()
+        for article in articles {
+            models.append(ArticleViewModel(article: article))
+        }
+        return models
+    }
+    
     func getTopHeadlines() {
         // create fake loading data while user waits for getting top headlines
         m_arrData.removeAll()
@@ -41,7 +49,7 @@ class HomeVC: UIViewController {
         m_tableView.isUserInteractionEnabled = false
         m_tableView.reloadData()
         ApiManager.getTopHeadlinesInUS(onSuccess: { (task, articles) in
-            self.m_arrData = articles
+            self.m_arrData = self.createArrayArticleViewModel(articles: articles)
             self.m_tableView.reloadData()
             self.m_tableView.isUserInteractionEnabled = true
             
@@ -61,11 +69,11 @@ class HomeVC: UIViewController {
         }
     }
     
-    func createFakeLoadingData() -> [Article] {
-        var arr = [Article]()
+    func createFakeLoadingData() -> [ArticleViewModel] {
+        var arr = [ArticleViewModel]()
         for _ in 0..<9 {
-            let article = Article()
-            arr.append(article)
+            let model = ArticleViewModel(article: Article())
+            arr.append(model)
         }
         return arr
     }
@@ -144,7 +152,7 @@ class HomeVC: UIViewController {
         print("goToNewsDetailVC")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "NewsDetailVC") as! NewsDetailVC
-        controller.m_article = m_arrData[index]
+        controller.m_articleViewModel = m_arrData[index]
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationController?.pushViewController(controller, animated: true)
     }

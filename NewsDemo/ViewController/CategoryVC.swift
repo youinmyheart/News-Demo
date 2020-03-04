@@ -10,12 +10,12 @@ class CategoryVC: UIViewController {
 
     let categoryCellId = "CategoryCollectionCell"
     
-    var m_arrCategories = [Category]()
+    var m_arrCategoryViewModels = [CategoryViewModel]()
     var m_selectedIndex = 0 // selected category index in array of categories
     var m_previousSelectedIndex = -1 // previous selected category index
     
-    var m_arrData = [Article]() // array of news
-    var m_arrFakeData = [Article]() // array of fake loading data
+    var m_arrData = [ArticleViewModel]() // array of news
+    var m_arrFakeData = [ArticleViewModel]() // array of fake loading data
     
     @IBOutlet weak var m_collectionView: UICollectionView!
     @IBOutlet weak var m_tableView: UITableView!
@@ -43,6 +43,14 @@ class CategoryVC: UIViewController {
         m_tableView.register(UINib(nibName: "NewsTableCell", bundle: nil), forCellReuseIdentifier: Constants.newsTableCellId)
     }
     
+    func createArrayArticleViewModel(articles: [Article]) -> [ArticleViewModel] {
+        var models = [ArticleViewModel]()
+        for article in articles {
+            models.append(ArticleViewModel(article: article))
+        }
+        return models
+    }
+    
     func createDataCategory() {
         let bitcoinImage = UIImage(named: "bitcoin")
         let appleImage = UIImage(named: "apple")
@@ -53,11 +61,11 @@ class CategoryVC: UIViewController {
         let earthquake = Category(image: earthquakeImage, text: "Earthquake", isSelected: false)
         let animal = Category(image: animalImage, text: "Animal", isSelected: false)
         
-        m_arrCategories.removeAll()
-        m_arrCategories.append(bitcoin)
-        m_arrCategories.append(apple)
-        m_arrCategories.append(earthquake)
-        m_arrCategories.append(animal)
+        m_arrCategoryViewModels.removeAll()
+        m_arrCategoryViewModels.append(CategoryViewModel(category: bitcoin))
+        m_arrCategoryViewModels.append(CategoryViewModel(category: apple))
+        m_arrCategoryViewModels.append(CategoryViewModel(category: earthquake))
+        m_arrCategoryViewModels.append(CategoryViewModel(category: animal))
     }
     
     func updateSelectedCategory() {
@@ -66,15 +74,15 @@ class CategoryVC: UIViewController {
         }
         
         var indexPaths = [IndexPath]()
-        if m_selectedIndex >= 0 && m_selectedIndex < m_arrCategories.count {
+        if m_selectedIndex >= 0 && m_selectedIndex < m_arrCategoryViewModels.count {
             AppUtils.log("update m_selectedIndex:", m_selectedIndex)
-            m_arrCategories[m_selectedIndex].isSelected = true
+            m_arrCategoryViewModels[m_selectedIndex].isSelected = true
             indexPaths.append(IndexPath(row: m_selectedIndex, section: 0))
         }
         
-        if m_previousSelectedIndex >= 0 && m_previousSelectedIndex < m_arrCategories.count {
+        if m_previousSelectedIndex >= 0 && m_previousSelectedIndex < m_arrCategoryViewModels.count {
             AppUtils.log("update m_previousSelectedIndex:", m_previousSelectedIndex)
-            m_arrCategories[m_previousSelectedIndex].isSelected = false
+            m_arrCategoryViewModels[m_previousSelectedIndex].isSelected = false
             indexPaths.append(IndexPath(row: m_previousSelectedIndex, section: 0))
         }
         m_collectionView.reloadItems(at: indexPaths)
@@ -86,11 +94,11 @@ class CategoryVC: UIViewController {
             return
         }
         
-        if selectedCategoryIndex < 0 || selectedCategoryIndex >= m_arrCategories.count {
+        if selectedCategoryIndex < 0 || selectedCategoryIndex >= m_arrCategoryViewModels.count {
             return
         }
         
-        guard let keyword = m_arrCategories[selectedCategoryIndex].text else { return }
+        guard let keyword = m_arrCategoryViewModels[selectedCategoryIndex].text else { return }
                 
         AppUtils.log("getNews with keyword:", keyword)
         // create fake loading data while user waits for getting top headlines
@@ -99,7 +107,7 @@ class CategoryVC: UIViewController {
         m_tableView.isUserInteractionEnabled = false
         m_tableView.reloadData()
         ApiManager.getAllArticles(keyword: keyword, onSuccess: { (task, articles) in
-            self.m_arrData = articles
+            self.m_arrData = self.createArrayArticleViewModel(articles: articles)
             self.m_tableView.reloadData()
             self.m_tableView.isUserInteractionEnabled = true
             
@@ -120,11 +128,11 @@ class CategoryVC: UIViewController {
         }
     }
     
-    func createFakeLoadingData() -> [Article] {
-        var arr = [Article]()
+    func createFakeLoadingData() -> [ArticleViewModel] {
+        var arr = [ArticleViewModel]()
         for _ in 0..<9 {
-            let article = Article()
-            arr.append(article)
+            let model = ArticleViewModel(article: Article())
+            arr.append(model)
         }
         return arr
     }
@@ -188,7 +196,7 @@ class CategoryVC: UIViewController {
         print("goToNewsDetailVC")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "NewsDetailVC") as! NewsDetailVC
-        controller.m_article = m_arrData[index]
+        controller.m_articleViewModel = m_arrData[index]
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -209,12 +217,12 @@ extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        m_arrCategories.count
+        m_arrCategoryViewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: categoryCellId, for: indexPath) as! CategoryCollectionCell
-        cell.configure(with: m_arrCategories[indexPath.row])
+        cell.configure(with: m_arrCategoryViewModels[indexPath.row])
         return cell
     }
     

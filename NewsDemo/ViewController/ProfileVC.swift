@@ -112,8 +112,8 @@ class ProfileVC: UIViewController {
                 if pass == password {
                     let name = account["name"] as? String
                     let userInfo = UserInfo(name: name, image: nil, email: email)
-                    saveUserSignedIn(userInfo: userInfo)
-                    goToUserProfileVC(userInfo: userInfo, animated: true)
+                    saveUserSignedIn(userInfo: UserInfoViewModel(userInfo: userInfo))
+                    goToUserProfileVC(userInfo: UserInfoViewModel(userInfo: userInfo), animated: true)
                 } else {
                     AppUtils.showAlert(title: "Error", message: "Incorrect username or password", buttonStr: "OK", viewController: self) { (action) in
                         
@@ -139,11 +139,11 @@ class ProfileVC: UIViewController {
             let email = dic["email"] as? String
             let image = dic["image"] as? UIImage
             let userInfo = UserInfo(name: name, image: image, email: email)
-            goToUserProfileVC(userInfo: userInfo, animated: false)
+            goToUserProfileVC(userInfo: UserInfoViewModel(userInfo: userInfo), animated: false)
         }
     }
     
-    func saveUserSignedIn(userInfo: UserInfo) {
+    func saveUserSignedIn(userInfo: UserInfoViewModel) {
         let dicInfo = ["email": userInfo.email ?? "", "name": userInfo.name ?? ""] as [String : Any]
         UserDefaults.standard.set(dicInfo, forKey: "currentUser")
     }
@@ -181,7 +181,7 @@ class ProfileVC: UIViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func goToUserProfileVC(userInfo: UserInfo, animated: Bool) {
+    func goToUserProfileVC(userInfo: UserInfoViewModel, animated: Bool) {
         print("goToUserProfileVC")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC

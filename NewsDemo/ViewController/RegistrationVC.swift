@@ -129,12 +129,12 @@ class RegistrationVC: UIViewController {
         
         let userInfo = UserInfo(name: nameUser, image: nil, email: email)
         AppUtils.showAlert(title: "Congratulation", message: "Your account is created!", buttonStr: "OK", viewController: self) { (action) in
-            self.saveUserSignedIn(userInfo: userInfo)
-            self.goToUserProfileVC(userInfo: userInfo)
+            self.saveUserSignedIn(userInfo: UserInfoViewModel(userInfo: userInfo))
+            self.goToUserProfileVC(userInfo: UserInfoViewModel(userInfo: userInfo))
         }
     }
     
-    func saveUserSignedIn(userInfo: UserInfo) {
+    func saveUserSignedIn(userInfo: UserInfoViewModel) {
         let dicInfo = ["email": userInfo.email ?? "", "name": userInfo.name ?? ""] as [String : Any]
         UserDefaults.standard.set(dicInfo, forKey: "currentUser")
     }
@@ -195,7 +195,7 @@ class RegistrationVC: UIViewController {
         lblEmailError.isHidden = true
     }
     
-    func goToUserProfileVC(userInfo: UserInfo) {
+    func goToUserProfileVC(userInfo: UserInfoViewModel) {
         print("goToUserProfileVC")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC

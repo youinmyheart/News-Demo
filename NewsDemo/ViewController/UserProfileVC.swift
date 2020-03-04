@@ -5,7 +5,7 @@ import UIKit
 
 class UserProfileVC: UIViewController {
 
-    var m_userInfo = UserInfo()
+    var m_userInfo = UserInfoViewModel(userInfo: UserInfo())
     
     @IBOutlet weak var m_userImage: UIImageView!
     @IBOutlet weak var lblNameUser: UILabel!
